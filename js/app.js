@@ -106,7 +106,7 @@ const imagesSection = document.getElementById('right-side');
 imagesSection.addEventListener('click', handleClick);
 
 let x = 0;
-let attempts = 5;
+let attempts = 25;
 function handleClick(event) {
 
     if (x === attempts - 1) {
