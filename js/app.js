@@ -23,14 +23,10 @@ const imgsName = [
 
 ];
 
+
 const leftImage = document.getElementById('left-image');
 const rightImage = document.getElementById('right-image');
 const middleImage = document.getElementById('middle-image');
-
-
-console.log(leftImage);
-console.log(rightImage);
-console.log(middleImage);
 
 
 function BusMall(imgsName) {
@@ -38,55 +34,59 @@ function BusMall(imgsName) {
     this.path = `./img/${imgsName}`;
     this.votes = 0;
     this.views = 0;
-    //BusMalls.push(this);
     BusMall.all.push(this);
 }
 BusMall.all = [];
 for (let i = 0; i < imgsName.length; i++) {
     new BusMall(imgsName[i]);
 }
-// console.table(BusMall.all);
+
+
+let renderedImgs = [];
+
 
 function renderImg() {
-    let renderedImgs = [];
-    const leftIndex = randomNumber(0, BusMall.all.length - 1);
 
-    leftImage.src = BusMall.all[leftIndex].path;
-    leftImage.title = BusMall.all[leftIndex].name;
-    leftImage.alt = BusMall.all[leftIndex].name;
+    renderedImgs = noReeat();
+    console.log('renderedImgs', renderedImgs);
+
+    leftImage.src = BusMall.all[renderedImgs[0]].path;
+    leftImage.title = BusMall.all[renderedImgs[0]].name;
+    leftImage.alt = BusMall.all[renderedImgs[0]].name;
+    renderedImgs.shift();
     renderedImgs.push(leftImage.alt);
 
-    const rightIndex = randomNumber(0, BusMall.all.length - 1);
+    middleImage.src = BusMall.all[renderedImgs[0]].path;
+    middleImage.title = BusMall.all[renderedImgs[0]].name;
+    middleImage.alt = BusMall.all[renderedImgs[0]].name;
+    renderedImgs.shift();
+    renderedImgs.push(middleImage.alt);
 
-    rightImage.src = BusMall.all[rightIndex].path;
-    rightImage.title = BusMall.all[rightIndex].name;
-    rightImage.alt = BusMall.all[rightIndex].name;
+    rightImage.src = BusMall.all[renderedImgs[0]].path;
+    rightImage.title = BusMall.all[renderedImgs[0]].name;
+    rightImage.alt = BusMall.all[renderedImgs[0]].name;
+    renderedImgs.shift();
     renderedImgs.push(rightImage.alt);
 
-    const middleIndex = randomNumber(0, BusMall.all.length - 1);
-
-    middleImage.src = BusMall.all[middleIndex].path;
-    middleImage.title = BusMall.all[middleIndex].name;
-    middleImage.alt = BusMall.all[middleIndex].name;
-    renderedImgs.push(middleImage.alt);
+    console.log(renderedImgs);
 
     for (let i = 0; i < BusMall.all.length; i++) {
         for (let j = 0; j < renderedImgs.length; j++) {
-            console.log(renderedImgs[j]);
-            console.log(BusMall.all[i].name);
+
             if (BusMall.all[i].name === renderedImgs[j]) {
                 BusMall.all[i].views = BusMall.all[i].views + 1;
             }
         }
     }
-    console.log(BusMall.all);
-    console.log(renderedImgs);
+
 }
 
 function randomNumber(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 renderImg();
+
+
 
 function renderResults() {
     const results = document.getElementById('left-side');
@@ -105,27 +105,58 @@ const imagesSection = document.getElementById('right-side');
 
 imagesSection.addEventListener('click', handleClick);
 
-let x = 0;
-let attempts = 25;
+let x = 1;
+let attempts = 5;
+
 function handleClick(event) {
 
-    if (x === attempts - 1) {
-        imagesSection.removeEventListener('click', handleClick);
-        renderResults();
-    }
-    if (event.returnValue === true) {
-        x++;
-    }
     if (event.target.id !== 'right-side') {
         for (let i = 0; i < BusMall.all.length; i++) {
             if (BusMall.all[i].name === event.target.title) {
                 BusMall.all[i].votes = BusMall.all[i].votes + 1;
+                renderImg();
             }
         }
-        renderImg();
-        console.log(BusMall.all);
         event.preventDefault();
+
     }
+
+    if (x !== attempts) {
+        x++;
+    } else {
+        imagesSection.removeEventListener('click', handleClick);
+        renderResults();
+    }
+
 }
+
+
+
+function noReeat() {
+    let arrLeft = [];
+    for (let i = 0; i < 3; i++) {
+        arrLeft.push(randomNumber(0, BusMall.all.length - 1));
+    }
+
+    let i = 0;
+    while (i < 9) {
+        if (arrLeft[0] === arrLeft[1]) {
+            arrLeft.shift();
+            arrLeft.unshift(randomNumber(0, BusMall.all.length - 1));
+        } if (arrLeft[0] === arrLeft[2]) {
+            arrLeft.pop();
+            arrLeft.push(randomNumber(0, BusMall.all.length - 1));
+        } if (arrLeft[1] === arrLeft[0]) {
+            arrLeft.shift();
+            arrLeft.unshift(randomNumber(0, BusMall.all.length - 1));
+        } if (arrLeft[1] === arrLeft[2]) {
+            arrLeft.pop();
+            arrLeft.push(randomNumber(0, BusMall.all.length - 1));
+        }
+        i++;
+    }
+    return arrLeft;
+}
+
 
 
