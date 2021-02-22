@@ -1,29 +1,30 @@
 body {
-        background-color: grey;
+  background-color: grey;
 }
 #right-side img {
-        width: 200px;
-        height: 200px;
-        margin: 10px;
+  width: 200px;
+  height: 200px;
+  margin: 10px;
+  cursor: pointer;
 }
 #right-side {
-        border: hotpink solid 2px;
-        padding: 20px;
+  border: hotpink solid 2px;
+  padding: 20px;
 }
 
 .left-side {
-        display: flex;
-        flex-direction: column;
-        width: 350px;
-        border: hotpink solid 2px;
-        padding: 20px;
+  display: flex;
+  flex-direction: column;
+  width: 350px;
+  border: hotpink solid 2px;
+  padding: 20px;
 }
 .left-side li {
-        font-size: 2rem;
+  font-size: 2rem;
 }
 main {
-        margin-top: 10%;
-        display: flex;
-        flex-direction: row-reverse;
-        justify-content: space-around;
+  margin-top: 10%;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-around;
 }

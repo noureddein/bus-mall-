@@ -44,68 +44,31 @@ for (let i = 0; i < imgsName.length; i++) {
 
 let renderedImgs = [];
 
-let secondIteration = [];
-let arrLeft = [];
-let arrMiddle = [];
-let arrRight = [];
+
 function renderImg() {
 
+    renderedImgs = noReeat();
+    console.log('renderedImgs', renderedImgs);
 
-    for (let i = 0; i < 3; i++) {
-        arrLeft.push(randomNumber(0, BusMall.all.length - 1));
-        for ()
-    }
-
-    for (let i = 0; i < 5; i++) {
-        arrLeft.push(randomNumber(0, BusMall.all.length - 1));
-
-    }
-    console.log('Left', arrLeft);
-
-    for (let j = 0; j < 5; j++) {
-        arrMiddle.push(randomNumber(0, BusMall.all.length - 1));
-        for (let i = 0; i < 5; i++) {
-            if (arrMiddle[i] === arrLeft[j]) {
-                arrMiddle.pop();
-                arrMiddle.push(randomNumber(0, BusMall.all.length - 1));
-            }
-        }
-    }
-    console.log('Middle', arrMiddle);
-
-    for (let j = 0; j < 5; j++) {
-        arrRight.push(randomNumber(0, BusMall.all.length - 1));
-        for (let i = 0; i < 5; i++) {
-            if (arrRight[i] === arrLeft[j] && arrRight[i] === arrMiddle[j]) {
-                arrMiddle.pop();
-                arrMiddle.push(randomNumber(0, BusMall.all.length - 1));
-            }
-        }
-    }
-
-    console.log('Right', arrRight);
-
-    const leftIndex = randomNumber(0, BusMall.all.length - 1);
-
-    leftImage.src = BusMall.all[leftIndex].path;
-    leftImage.title = BusMall.all[leftIndex].name;
-    leftImage.alt = BusMall.all[leftIndex].name;
+    leftImage.src = BusMall.all[renderedImgs[0]].path;
+    leftImage.title = BusMall.all[renderedImgs[0]].name;
+    leftImage.alt = BusMall.all[renderedImgs[0]].name;
+    renderedImgs.shift();
     renderedImgs.push(leftImage.alt);
 
-
-    const middleIndex = randomNumber(0, BusMall.all.length - 1);
-
-    middleImage.src = BusMall.all[middleIndex].path;
-    middleImage.title = BusMall.all[middleIndex].name;
-    middleImage.alt = BusMall.all[middleIndex].name;
+    middleImage.src = BusMall.all[renderedImgs[0]].path;
+    middleImage.title = BusMall.all[renderedImgs[0]].name;
+    middleImage.alt = BusMall.all[renderedImgs[0]].name;
+    renderedImgs.shift();
     renderedImgs.push(middleImage.alt);
 
-    const rightIndex = randomNumber(0, BusMall.all.length - 1);
-
-    rightImage.src = BusMall.all[rightIndex].path;
-    rightImage.title = BusMall.all[rightIndex].name;
-    rightImage.alt = BusMall.all[rightIndex].name;
+    rightImage.src = BusMall.all[renderedImgs[0]].path;
+    rightImage.title = BusMall.all[renderedImgs[0]].name;
+    rightImage.alt = BusMall.all[renderedImgs[0]].name;
+    renderedImgs.shift();
     renderedImgs.push(rightImage.alt);
+
+    console.log(renderedImgs);
 
     for (let i = 0; i < BusMall.all.length; i++) {
         for (let j = 0; j < renderedImgs.length; j++) {
@@ -122,13 +85,6 @@ function randomNumber(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 renderImg();
-
-
-
-
-
-
-
 
 
 
@@ -154,32 +110,11 @@ let attempts = 5;
 
 function handleClick(event) {
 
-
-    console.log('Before Delete renderedImgs; ', renderedImgs);
-    secondIteration = renderedImgs;
-    console.log('After add rendered to seconIreration ', secondIteration);
-    renderedImgs = new Array();
-    console.log('After Delete renderedImg', renderedImgs);
-
-
-    renderImg();
-    renderedImgs.push(leftImage.alt);
-    renderedImgs.push(middleImage.alt);
-    renderedImgs.push(rightImage.alt);
-    console.log('after Push', renderedImgs);
-
-    for (let i = 0; i < renderedImgs.length; i++) {
-        for (let j = 0; j < secondIteration.length; j++) {
-            if (secondIteration[j] === renderedImgs[i]) {
-                renderImg;
-            }
-        }
-    }
     if (event.target.id !== 'right-side') {
         for (let i = 0; i < BusMall.all.length; i++) {
             if (BusMall.all[i].name === event.target.title) {
                 BusMall.all[i].votes = BusMall.all[i].votes + 1;
-
+                renderImg();
             }
         }
         event.preventDefault();
@@ -192,18 +127,36 @@ function handleClick(event) {
         imagesSection.removeEventListener('click', handleClick);
         renderResults();
     }
-    renderedImgs = new Array();
-    console.log('renderedImgs', renderedImgs);
-
-
-
 
 }
 
 
 
+function noReeat() {
+    let arrLeft = [];
+    for (let i = 0; i < 3; i++) {
+        arrLeft.push(randomNumber(0, BusMall.all.length - 1));
+    }
 
-
+    let i = 0;
+    while (i < 9) {
+        if (arrLeft[0] === arrLeft[1]) {
+            arrLeft.shift();
+            arrLeft.unshift(randomNumber(0, BusMall.all.length - 1));
+        } if (arrLeft[0] === arrLeft[2]) {
+            arrLeft.pop();
+            arrLeft.push(randomNumber(0, BusMall.all.length - 1));
+        } if (arrLeft[1] === arrLeft[0]) {
+            arrLeft.shift();
+            arrLeft.unshift(randomNumber(0, BusMall.all.length - 1));
+        } if (arrLeft[1] === arrLeft[2]) {
+            arrLeft.pop();
+            arrLeft.push(randomNumber(0, BusMall.all.length - 1));
+        }
+        i++;
+    }
+    return arrLeft;
+}
 
 
 
