@@ -170,14 +170,56 @@ function renderResults() {
 //add all Views and Votes to array
 let viewResults = [];
 let votesResults = [];
-
+let imgNameWithoutExtension = [];
 function renderChart() {
     //this for loop PUSH results to the array
     for (let i = 0; i < imgsName.length; i++) {
 
         viewResults.push(BusMall.all[i].views);
         votesResults.push(BusMall.all[i].votes);
+        imgNameWithoutExtension.push(imgsName[i].replace('.jpg', ' ').replace('.png', ' ').replace('gif', ' '));
     }
+
+    const ctx = document.getElementById('myChart').getContext('2d');
+
+    ctx.height = 100;
+    const chart = new Chart(ctx, {
+        // The type of chart we want to create
+        type: 'bar',
+
+        // The data for our dataset
+        data: {
+            labels: imgNameWithoutExtension,
+            datasets: [{
+                barThickness: 30,
+                borderWidth: 2,
+                minBarLength: 2,
+                label: 'Votes',
+                backgroundColor: 'rgba(20, 19, 132,0.66)',
+                borderColor: 'rgba(255, 99, 13,1)',
+                data: votesResults,
+            }, {
+                label: 'View',
+                minBarLength: 2,
+                borderWidth: 2,
+                data: viewResults,
+                backgroundColor: 'green',
+                borderColor: '#eee',
+                order: 1
+            }]
+        },
+
+
+        // Configuration options go here
+        options: {
+            legend: {
+                labels: {
+                    fontColor: '#eee',
+                    fontSize: 16,
+                }
+            },
+        }
+    });
 }
 console.log('viewResults', viewResults);
 console.log('votesResults', votesResults);
