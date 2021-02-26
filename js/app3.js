@@ -37,8 +37,6 @@ function BusMall(imgsName) {
     this.views = 0;
     BusMall.all.push(this);
     BusMall.new.push(this);
-    // localStorage.setItem('views', JSON.stringify(BusMall.all));
-
 }
 
 BusMall.all = [];
@@ -46,8 +44,6 @@ BusMall.new = [];
 
 //--------- Render Previose views ---------
 function retrieve() {
-    // BusMall.views = 0;
-    // BusMall.votes = 0;
     if (localStorage.length > 0) {
         const previousResults = document.getElementById('left-side');
         const h4El = document.createElement('h4');
@@ -55,7 +51,6 @@ function retrieve() {
         h4El.textContent = 'Previous Results';
 
         BusMall.all = JSON.parse(localStorage.getItem('views'));
-        // console.log('retreve console', BusMall.all);
         renderResults();
     }
 }
@@ -65,7 +60,6 @@ function retrieve() {
 for (let i = 0; i < imgsName.length; i++) {
     new BusMall(imgsName[i]);
 }
-// console.log(BusMall.all);
 // --------- Get Random Numbers -----------------
 function getRandomNumber(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -116,7 +110,6 @@ function renderImg() {
     rightImage.alt = BusMall.all[notRepeatedArray[2]].name;
     rightImage.title = BusMall.all[notRepeatedArray[2]].name;
 
-
 }
 renderImg();
 
@@ -165,15 +158,6 @@ function handleClick(event) {
             renderResultsNew();
             renderChart();
             localStorage.setItem('views', JSON.stringify(BusMall.all));
-            // localStorage.setItem('new', JSON.stringify(BusMall.new));
-            // console.log(BusMall.votes);
-
-
-            // storeData();
-            // reterve();
-            // console.log('views: ', JSON.parse(localStorage.getItem('views')));
-            // console.log('after render', BusMall.all);
-
         }
     }
 
@@ -188,9 +172,7 @@ function renderResults() {
     for (let i = 0; i < BusMall.all.length; i++) {
         const liEl = document.createElement('li');
         ulEl.appendChild(liEl);
-        // liEl.textContent = ` ${imgsName[i].replace('.jpg', ' ').replace('.png', ' ').replace('gif', ' ')} had ${BusMall.all[i].votes} vots, and was seen ${BusMall.all[i].views}  times`;
-
-        liEl.textContent = ` ${imgsName[i]} had ${BusMall.all[i].votes} vots, and was seen ${BusMall.all[i].views}  times`;
+        liEl.textContent = ` ${imgsName[i].replace('.jpg', ' ').replace('.png', ' ').replace('gif', ' ')} had ${BusMall.all[i].votes} vots, and was seen ${BusMall.all[i].views}  times`;
     }
 }
 function renderResultsNew() {
@@ -204,9 +186,7 @@ function renderResultsNew() {
     for (let i = 0; i < BusMall.all.length; i++) {
         const liEl = document.createElement('li');
         ulEl.appendChild(liEl);
-        // liEl.textContent = ` ${imgsName[i].replace('.jpg', ' ').replace('.png', ' ').replace('gif', ' ')} had ${BusMall.all[i].votes} vots, and was seen ${BusMall.all[i].views}  times`;
-
-        liEl.textContent = ` ${imgsName[i]} had ${BusMall.new[i].votes} vots, and was seen ${BusMall.new[i].views}  times`;
+        liEl.textContent = ` ${imgsName[i].replace('.jpg', ' ').replace('.png', ' ').replace('gif', ' ')} had ${BusMall.all[i].votes} vots, and was seen ${BusMall.all[i].views}  times`;
     }
 }
 
@@ -268,8 +248,6 @@ function renderChart() {
     });
 }
 
-
 retrieve();
-// console.log('new', BusMall.new);
-// console.log('all', BusMall.all);
+
 
