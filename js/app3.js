@@ -37,6 +37,9 @@ function BusMall(imgsName) {
     this.votes = 0;
     this.views = 0;
     BusMall.all.push(this);
+    localStorage.setItem('views', JSON.stringify(BusMall.views));
+
+
 }
 
 // ------- Create New Objects ----------
@@ -74,7 +77,7 @@ function arrayWithoutRepeat() {
 
 // -------------- This Array are have NO Repeated Numbers ---------------------
 let notRepeatedArray = arrayWithoutRepeat();
-// console.log(notRepeatedArray);
+
 
 // ------------- Rendering Images ---------------
 
@@ -102,7 +105,7 @@ renderImg();
 
 // ------- This Function Change Imgs By Clicking ---------------
 
-let attempts = 5;
+let attempts = 15;
 let attemptsCounter = 1;
 
 const imagesSection = document.getElementById('right-side');
@@ -146,6 +149,10 @@ function handleClick(event) {
             imagesSection.removeEventListener('click', handleClick);
             renderResults();
             renderChart();
+            storeData();
+            console.log('views: ', JSON.parse(localStorage.getItem('views')));
+
+
         }
     }
 
@@ -221,5 +228,13 @@ function renderChart() {
         }
     });
 }
-console.log('viewResults', viewResults);
-console.log('votesResults', votesResults);
+
+//---------------- Save data in Local Storage -----------------------
+let dataStoreAsObject = [];
+function storeData() {
+    for (let i = 0; i < 20; i++) {
+        dataStoreAsObject.push(localStorage.setItem('views', JSON.stringify(BusMall.all)));
+    }
+
+}
+console.log(BusMall.all);
