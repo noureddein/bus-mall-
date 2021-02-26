@@ -1,5 +1,4 @@
 'use strict';
-
 //--------Imgs Name-----------
 const imgsName = [
     'bag.jpg',
@@ -37,17 +36,36 @@ function BusMall(imgsName) {
     this.votes = 0;
     this.views = 0;
     BusMall.all.push(this);
-    localStorage.setItem('views', JSON.stringify(BusMall.views));
+    BusMall.new.push(this);
+    // localStorage.setItem('views', JSON.stringify(BusMall.all));
 
+}
 
+BusMall.all = [];
+BusMall.new = [];
+
+//--------- Render Previose views ---------
+function retrieve() {
+    // BusMall.views = 0;
+    // BusMall.votes = 0;
+    if (localStorage.length > 0) {
+        const previousResults = document.getElementById('left-side');
+        const h4El = document.createElement('h4');
+        previousResults.appendChild(h4El);
+        h4El.textContent = 'Previous Results';
+
+        BusMall.all = JSON.parse(localStorage.getItem('views'));
+        // console.log('retreve console', BusMall.all);
+        renderResults();
+    }
 }
 
 // ------- Create New Objects ----------
-BusMall.all = [];
+
 for (let i = 0; i < imgsName.length; i++) {
     new BusMall(imgsName[i]);
 }
-
+// console.log(BusMall.all);
 // --------- Get Random Numbers -----------------
 function getRandomNumber(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -105,7 +123,7 @@ renderImg();
 
 // ------- This Function Change Imgs By Clicking ---------------
 
-let attempts = 15;
+let attempts = 3;
 let attemptsCounter = 1;
 
 const imagesSection = document.getElementById('right-side');
@@ -115,29 +133,26 @@ imagesSection.addEventListener('click', handleClick);
 function handleClick(event) {
     //add views
     for (let j = 0; j < 3; j++) {
-        // console.log('after click', notRepeatedArray);
-        // if (BusMall.all[usedImgs[j]].name) {
-        // console.log('busmall for ' + j + ' name', BusMall.all[usedImgs[j]].name);
-        // console.log('target title', event.target.title);
         BusMall.all[usedImgs[j]].views = BusMall.all[usedImgs[j]].views + 1;
-        // }
+        if (localStorage.length > 0) {
+            BusMall.new[usedImgs[j]].views = BusMall.new[usedImgs[j]].views + 1;
+        }
     }
-    // console.log('Before Click', usedImgs);
-
     // Change Imgs By clicks
     event.preventDefault();
     if (event.target.id !== 'right-side') {
         for (let i = 0; i < BusMall.all.length; i++) {
             if (BusMall.all[i].name === event.target.title) {
                 BusMall.all[i].votes = BusMall.all[i].votes + 1;
+                if (localStorage.length > 0) {
+                    BusMall.new[i].votes = BusMall.new[i].votes + 1;
+                }
+                console.log(BusMall.all[i].votes);
+                console.log(BusMall.all[i].votes);
+
                 // pass NEW Array by Click
-
-
                 notRepeatedArray = arrayWithoutRepeat();
                 renderImg();
-                // console.log(BusMall.all[i].votes);
-                // console.log('After Click', notRepeatedArray);
-                // console.log(BusMall.all);
                 break;
             }
         }
@@ -147,11 +162,17 @@ function handleClick(event) {
             attemptsCounter++;
         } else {
             imagesSection.removeEventListener('click', handleClick);
-            renderResults();
+            renderResultsNew();
             renderChart();
-            storeData();
-            console.log('views: ', JSON.parse(localStorage.getItem('views')));
+            localStorage.setItem('views', JSON.stringify(BusMall.all));
+            // localStorage.setItem('new', JSON.stringify(BusMall.new));
+            // console.log(BusMall.votes);
 
+
+            // storeData();
+            // reterve();
+            // console.log('views: ', JSON.parse(localStorage.getItem('views')));
+            // console.log('after render', BusMall.all);
 
         }
     }
@@ -160,14 +181,32 @@ function handleClick(event) {
 
 // ----------- This Function Show the result of Views and Votes --------------
 function renderResults() {
+
     const results = document.getElementById('left-side');
     const ulEl = document.createElement('ol');
     results.appendChild(ulEl);
     for (let i = 0; i < BusMall.all.length; i++) {
         const liEl = document.createElement('li');
         ulEl.appendChild(liEl);
-        liEl.textContent = ` ${imgsName[i].replace('.jpg', ' ').replace('.png', ' ').replace('gif', ' ')} had ${BusMall.all[i].votes} vots, and was seen ${BusMall.all[i].views}  times`;
+        // liEl.textContent = ` ${imgsName[i].replace('.jpg', ' ').replace('.png', ' ').replace('gif', ' ')} had ${BusMall.all[i].votes} vots, and was seen ${BusMall.all[i].views}  times`;
 
+        liEl.textContent = ` ${imgsName[i]} had ${BusMall.all[i].votes} vots, and was seen ${BusMall.all[i].views}  times`;
+    }
+}
+function renderResultsNew() {
+    const newResults = document.getElementById('left-side');
+    const h4El = document.createElement('h4');
+    newResults.appendChild(h4El);
+    h4El.textContent = 'New Results';
+    const results = document.getElementById('left-side');
+    const ulEl = document.createElement('ol');
+    results.appendChild(ulEl);
+    for (let i = 0; i < BusMall.all.length; i++) {
+        const liEl = document.createElement('li');
+        ulEl.appendChild(liEl);
+        // liEl.textContent = ` ${imgsName[i].replace('.jpg', ' ').replace('.png', ' ').replace('gif', ' ')} had ${BusMall.all[i].votes} vots, and was seen ${BusMall.all[i].views}  times`;
+
+        liEl.textContent = ` ${imgsName[i]} had ${BusMall.new[i].votes} vots, and was seen ${BusMall.new[i].views}  times`;
     }
 }
 
@@ -221,7 +260,7 @@ function renderChart() {
         options: {
             legend: {
                 labels: {
-                    fontColor: '#eee',
+                    fontColor: 'rgb(32, 39, 39)',
                     fontSize: 16,
                 }
             },
@@ -229,12 +268,8 @@ function renderChart() {
     });
 }
 
-//---------------- Save data in Local Storage -----------------------
-let dataStoreAsObject = [];
-function storeData() {
-    for (let i = 0; i < 20; i++) {
-        dataStoreAsObject.push(localStorage.setItem('views', JSON.stringify(BusMall.all)));
-    }
 
-}
-console.log(BusMall.all);
+retrieve();
+// console.log('new', BusMall.new);
+// console.log('all', BusMall.all);
+
