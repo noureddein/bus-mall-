@@ -1,6 +1,6 @@
 body {
-  background-color: rgb(98, 76, 76);
-  color: azure;
+  background-color: rgb(202, 202, 202);
+  color: rgb(32, 39, 39);
 }
 #right-side img {
   width: 200px;
@@ -33,7 +33,7 @@ canvas {
   width: 100% !important;
   height: 100% !important;
   display: block;
-  color: antiquewhite;
+  color: rgb(32, 39, 39);
 }
 header {
   text-align: center;
